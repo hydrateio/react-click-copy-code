@@ -56,5 +56,8 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "copy-to-clipboard": "^3.0.8"
+  }
 }
