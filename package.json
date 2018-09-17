@@ -1,7 +1,7 @@
 {
   "name": "react-clip-copy-code",
   "version": "1.0.0",
-  "description": "&quot;Copies any child component code to clipboard. Great for example pages.&quot;",
+  "description": "Copies any child component code to clipboard. Great for example pages.",
   "author": "sarahgp",
   "license": "MIT",
   "repository": "hydrateio/react-copy-click-code",
