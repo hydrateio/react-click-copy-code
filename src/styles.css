@@ -1,8 +1,38 @@
-/* add css styles here (optional) */
+@keyframes click-copy-slide-in {
+  0% {
+    transform: translateY(100%);
+    opacity: 0
+  }
 
-.test {
-  display: inline-block;
-  margin: 2em auto;
-  border: 2px solid #000;
-  font-size: 2em;
+  0% {
+    transform: translateY(95%);
+    opacity: 1
+  }
+
+  100% {
+    transform: translateY(-20%);
+    opacity: 1
+  }
+}
+
+.clickCopyNotificationWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  width: 100%;
+  padding: 10px;
+  background: hsla(233, 100%, 50%, 1);
+  color: white;
+}
+
+.clickCopyWrapper {
+  position: relative;
+  margin: 0 auto;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.clickCopyWrapper:hover .clickCopyNotificationWrapper {
+  animation: "click-copy-slide-in" ".5s" 1 "ease-out" "forwards"
 }

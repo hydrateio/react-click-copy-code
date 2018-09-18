@@ -22,6 +22,16 @@ const copyConsts = {
 const flatten = (arr) => [].concat.apply([], arr)
 
 export default class ClickCopy extends Component {
+  static Items = function Items ({ children }) { return children }
+  static Notification = function ({ copyState }) {
+    return (
+      <div className="clickCopyNotificationWrapper">
+        Hi
+        { /* copyConsts[copyState].text */ }
+      </div>
+    )
+  }
+
   state = {
     copyState: copyConsts.UNTRIED.name,
     itemId: '',
@@ -33,14 +43,18 @@ export default class ClickCopy extends Component {
   }
 
   componentWillMount = () => {
-    const { children, skippable = {} } = this.props
+    // Finds and processes the item children, so we can copy their code
+    const { children } = this.props
 
-    const [{ itemId, itemText }] = React.Children.map(children, (kid) => {
-      const { props: childProps, type: { name } } = kid
+    const itemChildren = React.Children.toArray(children).find(
+      (child) => child.type.name && child.type.name === 'Items').props.children
+
+    const { itemId, itemText } = React.Children.map(itemChildren, (kid) => {
+      const { props: childProps, type: { defaultProps, name = 'Unknown' } } = kid
 
       const itemProperties = Object.entries(childProps)
         .filter(([key, val]) => {
-            return !(skippable[key] && skippable[key] === val)
+            return !(defaultProps[key] && defaultProps[key] === val)
           })
 
       const itemId = flatten(itemProperties).join('-')
@@ -53,7 +67,12 @@ export default class ClickCopy extends Component {
 
       const itemText = `<${name}${itemPropertiesString} />`
       return { itemId, itemText }
-    })
+    }).reduce((acc, { itemId, itemText }) => {
+      return {
+        itemId:   acc.itemId.concat(itemId),
+        itemText: acc.itemText.concat(itemText)
+      }
+    }, {itemId: '', itemText: ''})
 
     this.setState({itemId, itemText})
   }
@@ -68,15 +87,19 @@ export default class ClickCopy extends Component {
   }
 
   render() {
-    const { children } = this.props
+    const { children, style } = this.props
     const { itemId } = this.state
 
     return (
-      <div id={itemId} style={{"cursor":"pointer"}} onClick={this.copyClick}>
+      <div id={itemId} className={"clickCopyWrapper"} style={{"cursor":"pointer", ...style}} onClick={this.copyClick}>
         {children}
       </div>
     )
   }
 }
 
-export { ClickCopy }
+// const ClickCopyWithNotification = () => {
+//   return
+// }
+
+export { ClickCopy, /*ClickCopyWithNotification*/ }

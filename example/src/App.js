@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import Icon from './Icon'
 
 import { ClickCopy } from 'react-clip-copy-code'
@@ -6,11 +6,24 @@ import { ClickCopy } from 'react-clip-copy-code'
 export default class App extends Component {
   render () {
     return (
-      <div style={{'width': '15vw', 'height': '15vh'}}>
-        <ClickCopy><Icon size={"100%"} /></ClickCopy>
-        <ClickCopy><Icon size={"100%"} duotone={true} /></ClickCopy>
-        <ClickCopy><Icon size={"100%"} baseColor={"#161f93"} accentColor={"#00baa9"} /></ClickCopy>
-      </div>
+      <Fragment>
+        <ClickCopy>
+          <ClickCopy.Items>
+           <Icon size={"25%"} duotone={true} />
+          </ClickCopy.Items>
+        </ClickCopy>
+        <ClickCopy>
+          <ClickCopy.Items>
+          <Icon size={"25%"} baseColor={"#fb00ff"} accentColor={"#2bff00"} /><Icon size={"25%"} />
+          </ClickCopy.Items>
+        </ClickCopy>
+        <ClickCopy>
+          <ClickCopy.Items>
+          <Icon size={"25%"} baseColor={"#161f93"} accentColor={"#00baa9"} />
+          </ClickCopy.Items>
+          <ClickCopy.Notification />
+        </ClickCopy>
+      </Fragment>
     )
   }
 }
