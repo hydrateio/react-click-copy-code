@@ -11,11 +11,13 @@ export default class App extends Component {
           <ClickCopy.Items>
            <Icon size={"25%"} duotone={true} />
           </ClickCopy.Items>
+          <ClickCopy.Notification />
         </ClickCopy>
         <ClickCopy>
           <ClickCopy.Items>
           <Icon size={"25%"} baseColor={"#fb00ff"} accentColor={"#2bff00"} /><Icon size={"25%"} />
           </ClickCopy.Items>
+          <ClickCopy.Notification />
         </ClickCopy>
         <ClickCopy>
           <ClickCopy.Items>

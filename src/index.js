@@ -21,14 +21,26 @@ const copyConsts = {
 
 const flatten = (arr) => [].concat.apply([], arr)
 
+const ClickContext = React.createContext()
+
 export default class ClickCopy extends Component {
   static Items = function Items ({ children }) { return children }
+
   static Notification = function ({ copyState }) {
     return (
-      <div className="clickCopyNotificationWrapper">
-        Hi
-        { /* copyConsts[copyState].text */ }
-      </div>
+        <ClickContext.Consumer>
+          {({ copyState }) => (
+            <div
+              className={styles.clickCopyNotificationWrapper}
+              style={{
+                background: 'hsla(233, 100%, 50%, 1)',
+                color: 'white'
+              }}
+            >
+              { copyConsts[copyState].text }
+            </div>
+          )}
+        </ClickContext.Consumer>
     )
   }
 
@@ -87,19 +99,22 @@ export default class ClickCopy extends Component {
   }
 
   render() {
-    const { children, style } = this.props
-    const { itemId } = this.state
+    const { children, wrapperStyles, onClick } = this.props
+    const { itemId, copyState } = this.state
 
     return (
-      <div id={itemId} className={"clickCopyWrapper"} style={{"cursor":"pointer", ...style}} onClick={this.copyClick}>
-        {children}
-      </div>
+      <ClickContext.Provider value={{itemId, copyState}}>
+        <div
+          id={itemId}
+          className={styles.clickCopyWrapper}
+          style={wrapperStyles}
+          onClick={this.copyClick}
+        >
+          {children}
+        </div>
+      </ClickContext.Provider>
     )
   }
 }
 
-// const ClickCopyWithNotification = () => {
-//   return
-// }
-
-export { ClickCopy, /*ClickCopyWithNotification*/ }
+export { ClickCopy }
