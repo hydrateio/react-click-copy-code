@@ -105,7 +105,7 @@ export default class ClickCopy extends Component {
 
       const itemProperties = Object.entries(childProps)
         .filter(([key, val]) => {
-            return !(defaultProps[key] && defaultProps[key] === val)
+            return !(defaultProps && defaultProps[key] && defaultProps[key] === val)
           })
 
       const itemId = flatten(itemProperties).join('-')
