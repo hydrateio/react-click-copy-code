@@ -13,7 +13,8 @@ export default class App extends Component {
            <Icon size={'50%'} duotone={true} />
           </ClickCopy.Items>
           <ClickCopy.Source />
-          <Message>No notification; yes source. Click copies code.</Message>
+          <ClickCopy.Notification />
+          <Message>Click copies code.</Message>
         </ClickCopy>
         <ClickCopy className='inner'>
           <ClickCopy.Items>
