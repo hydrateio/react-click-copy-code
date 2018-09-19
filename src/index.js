@@ -19,9 +19,9 @@ const copyConsts = {
   }
 }
 
-// configurable: copyConst texts, onCopy, onError, additional onClick, color, font, background-color for notification
-
 const flatten = (arr) => [].concat.apply([], arr)
+const callAll = (...fns) => (...args) =>
+  fns.forEach((fn) => fn && fn(...args))
 
 const ClickContext = React.createContext()
 
@@ -51,19 +51,27 @@ export default class ClickCopy extends Component {
 
   static Notification = function ({
     background = 'hsla(233, 100%, 50%, 1)',
-    color = 'white'
+    color = 'white',
+    font = 'monospace',
+    style,
+    className
   }) {
     return (
         <ClickContextConsumer>
-          {({ copyState }) => (
+          {({
+            copyState,
+            notificationMessages
+          }) => (
             <div
-              className={styles.clickCopyNotificationWrapper}
+              className={`${styles.clickCopyNotificationWrapper} ${className}`}
               style={{
                 background,
-                color
+                color,
+                fontFamily: font,
+                ...style
               }}
             >
-              { copyConsts[copyState].text }
+              { notificationMessages[copyState] || copyConsts[copyState].text }
             </div>
           )}
         </ClickContextConsumer>
@@ -73,17 +81,21 @@ export default class ClickCopy extends Component {
   state = {
     copyState: copyConsts.UNTRIED.name,
     itemId: '',
-    itemText: ''
+    itemText: '',
+    notificationMessages: {}
   }
 
-  _resetCopyState = () => {
-    setTimeout(() => this.setState({copyState: copyConsts.UNTRIED.name}), 1500)
+  _addNotificationMessages = (untried, error, success) => {
+    const notificationMessages = {
+      [copyConsts.UNTRIED.name]: untried,
+      [copyConsts.ERROR.name]:   error,
+      [copyConsts.SUCCESS.name]: success
+    }
+    this.setState({notificationMessages})
   }
 
-  componentWillMount = () => {
+  _processItems = (children) => {
     // Finds and processes the item children, so we can copy their code
-    const { children } = this.props
-
     const itemChildren = React.Children.toArray(children).find(
       (child) => child.type.name && child.type.name === 'Items').props.children
 
@@ -115,26 +127,54 @@ export default class ClickCopy extends Component {
     this.setState({itemId, itemText})
   }
 
+  _resetCopyState = () => {
+    setTimeout(() => this.setState({copyState: copyConsts.UNTRIED.name}), 1500)
+  }
+
+  componentWillMount = () => {
+    const { children, copyText, errorText, successText} = this.props
+
+    this._processItems(children)
+    this._addNotificationMessages(copyText, errorText, successText)
+  }
+
   copyClick = () => {
     try {
       copy(this.state.itemText)
-      this.setState({copyState: copyConsts.SUCCESS.name}, this._resetCopyState)
+      this.setState({copyState: copyConsts.SUCCESS.name},
+        callAll(this._resetCopyState, this.props.onSuccess))
     } catch (err) {
-      this.setState({copyState: copyConsts.ERROR.name}, this._resetCopyState)
+      this.setState({copyState: copyConsts.ERROR.name},
+        callAll(this._resetCopyState, this.props.onError))
     }
   }
 
   render() {
-    const { children, wrapperStyles, onClick } = this.props
-    const { itemId, copyState } = this.state
+
+    const {
+      children,
+      copyText,
+      errorText,
+      successText,
+      onClick,
+      onError,
+      onSuccess,
+      wrapperStyles
+    } = this.props
+
+    const { copyState, itemId, notificationMessages } = this.state
 
     return (
-      <ClickContext.Provider value={{itemId, copyState}}>
+      <ClickContext.Provider value={{
+        copyState,
+        itemId,
+        notificationMessages
+      }}>
         <div
           id={itemId}
           className={styles.clickCopyWrapper}
           style={wrapperStyles}
-          onClick={this.copyClick}
+          onClick={callAll(this.copyClick, onClick)}
         >
           {children}
         </div>

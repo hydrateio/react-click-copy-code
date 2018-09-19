@@ -13,7 +13,10 @@ export default class App extends Component {
           </ClickCopy.Items>
           <ClickCopy.Notification />
         </ClickCopy>
-        <ClickCopy>
+        <ClickCopy
+          copyText={"Alternate click inducement. 👻"}
+          onSuccess={() => console.log("I was successful.")}
+        >
           <ClickCopy.Items>
           <Icon size={"25%"} baseColor={"#fb00ff"} accentColor={"#2bff00"} /><Icon size={"25%"} />
           </ClickCopy.Items>
