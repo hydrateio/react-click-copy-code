@@ -19,28 +19,54 @@ const copyConsts = {
   }
 }
 
+// configurable: copyConst texts, onCopy, onError, additional onClick, color, font, background-color for notification
+
 const flatten = (arr) => [].concat.apply([], arr)
 
 const ClickContext = React.createContext()
 
-export default class ClickCopy extends Component {
-  static Items = function Items ({ children }) { return children }
+function ClickContextConsumer(props) {
+  return (
+    <ClickContext.Consumer {...props}>
+      {(context) => {
+        if (!context) {
+          throw new Error(
+            `ClickCopy compound components cannot be rendered outside the ClickCopy component`,
+          )
+        }
+        return props.children(context)
+      }}
+    </ClickContext.Consumer>
+  )
+}
 
-  static Notification = function ({ copyState }) {
+export default class ClickCopy extends Component {
+  static Items = function Items ({ children }) {
     return (
-        <ClickContext.Consumer>
+      <ClickContextConsumer>
+        {() => children}
+      </ClickContextConsumer>
+    )
+  }
+
+  static Notification = function ({
+    background = 'hsla(233, 100%, 50%, 1)',
+    color = 'white'
+  }) {
+    return (
+        <ClickContextConsumer>
           {({ copyState }) => (
             <div
               className={styles.clickCopyNotificationWrapper}
               style={{
-                background: 'hsla(233, 100%, 50%, 1)',
-                color: 'white'
+                background,
+                color
               }}
             >
               { copyConsts[copyState].text }
             </div>
           )}
-        </ClickContext.Consumer>
+        </ClickContextConsumer>
     )
   }
 

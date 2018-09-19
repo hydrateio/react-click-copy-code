@@ -6,12 +6,12 @@
 
   0% {
     transform: translateY(95%);
-    opacity: 1
+    opacity: .8
   }
 
   100% {
     transform: translateY(0%);
-    opacity: 1
+    opacity: .8
   }
 }
 
