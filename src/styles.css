@@ -23,11 +23,14 @@
   width: 100%;
   height: 100%;
   padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 1.4rem;
 }
 
 .clickCopyWrapper {
   position: relative;
-  margin: 0 auto;
   overflow: hidden;
   cursor: pointer;
 }

@@ -3,3 +3,17 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.container {
+  display: flex;
+  width: 90vw;
+  height: 40vh;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.inner {
+  flex: 1 1 0;
+  margin: 10px;
+  text-align: center;
+}

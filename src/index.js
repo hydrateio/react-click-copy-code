@@ -63,7 +63,7 @@ export default class ClickCopy extends Component {
             notificationMessages
           }) => (
             <div
-              className={`${styles.clickCopyNotificationWrapper} ${className}`}
+              className={`${styles.clickCopyNotificationWrapper} ${className || ''}`}
               style={{
                 background,
                 color,
@@ -164,7 +164,7 @@ export default class ClickCopy extends Component {
       }}>
         <div
           id={itemId}
-          className={`${styles.clickCopyWrapper} ${className}`}
+          className={`${styles.clickCopyWrapper} ${className || ''}`}
           onClick={callAll(this.copyClick, onClick)}
         >
           {children}
