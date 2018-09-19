@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Icon from './Icon'
 import Message from './Message'
 
-import { ClickCopy } from 'react-clip-copy-code'
+import ClickCopy from 'react-clip-copy-code'
 
 export default class App extends Component {
   render () {

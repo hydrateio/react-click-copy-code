@@ -1,111 +1,18 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import copy from 'copy-to-clipboard';
 import reactElementToJSXString from 'react-element-to-jsx-string';
 import styles from './styles.css'
 
-const copyConsts = {
-  COPY: {
-    name: 'COPY',
-    text: 'Click to copy!'
-  },
-  SUCCESS: {
-    name: 'SUCCESS',
-    text: 'Copied!'
-  },
-  ERROR: {
-    name: 'ERROR',
-    text: 'Oops. Try again.'
-  }
-}
-
-const flatten = (arr) => [].concat.apply([], arr)
-const callAll = (...fns) => (...args) =>
-  fns.forEach((fn) => fn && fn(...args))
-
-const ClickContext = React.createContext()
-
-function ClickContextConsumer(props) {
-  return (
-    <ClickContext.Consumer {...props}>
-      {(context) => {
-        if (!context) {
-          throw new Error(
-            `ClickCopy compound components cannot be rendered outside the ClickCopy component`,
-          )
-        }
-        return props.children(context)
-      }}
-    </ClickContext.Consumer>
-  )
-}
+import { copyConsts, callAll, ClickContext, ClickContextConsumer } from './utils'
+import Items from './Items'
+import Notification from './Notification'
+import Source from './Source'
 
 export default class ClickCopy extends Component {
-  static Items = function Items ({ children }) {
-    return (
-      <ClickContextConsumer>
-        {() => children}
-      </ClickContextConsumer>
-    )
-  }
-
-  static Notification = function Notification ({
-    background = '#001eff',
-    color = 'white',
-    font = 'monospace',
-    className,
-    style,
-    ...props
-  }) {
-    return (
-        <ClickContextConsumer>
-          {({
-            copyState,
-            notificationMessages
-          }) => (
-            <div
-              className={`${styles.clickCopyNotificationWrapper} ${className || ''}`}
-              style={{
-                background,
-                color,
-                fontFamily: font,
-                ...style
-              }}
-              { ...props }
-            >
-              { notificationMessages[copyState] || copyConsts[copyState].text }
-            </div>
-          )}
-        </ClickContextConsumer>
-    )
-  }
-
-  static Source = function Source ({
-    background = '#dadadd',
-    color = '#53535c',
-    font = 'monospace',
-    className,
-    style,
-    ...props
-  }) {
-    return (
-      <ClickContextConsumer>
-        {({ itemSource }) => (
-          <div
-            className={`${styles.clickCopySourceWrapper} ${className || ''}`}
-            style={{
-              background,
-              color,
-              fontFamily: font,
-              ...style
-              }}
-            { ...props }>
-            {itemSource}
-          </div>
-        )}
-      </ClickContextConsumer>
-    )
-  }
+  static Items = Items
+  static Notification = Notification
+  static Source = Source
 
   state = {
     copyState: copyConsts.COPY.name,
@@ -165,9 +72,7 @@ export default class ClickCopy extends Component {
   }
 
   render() {
-
     const { children, onClick, className } = this.props
-
     const { copyState, itemSource, notificationMessages } = this.state
 
     return (
@@ -186,5 +91,3 @@ export default class ClickCopy extends Component {
     )
   }
 }
-
-export { ClickCopy }
