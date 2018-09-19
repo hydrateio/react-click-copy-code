@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import copy from 'copy-to-clipboard';
+import reactElementToJSXString from 'react-element-to-jsx-string';
 import styles from './styles.css'
 
 const copyConsts = {
@@ -49,7 +50,7 @@ export default class ClickCopy extends Component {
   }
 
   static Notification = function Notification ({
-    background = 'hsla(233, 100%, 50%, 1)',
+    background = '#001eff',
     color = 'white',
     font = 'monospace',
     className,
@@ -79,6 +80,33 @@ export default class ClickCopy extends Component {
     )
   }
 
+  static Source = function Source ({
+    background = '#dadadd',
+    color = '#53535c',
+    font = 'monospace',
+    className,
+    style,
+    ...props
+  }) {
+    return (
+      <ClickContextConsumer>
+        {({ itemSource }) => (
+          <div
+            className={`${styles.clickCopySourceWrapper} ${className || ''}`}
+            style={{
+              background,
+              color,
+              fontFamily: font,
+              ...style
+              }}
+            { ...props }>
+            {itemSource}
+          </div>
+        )}
+      </ClickContextConsumer>
+    )
+  }
+
   state = {
     copyState: copyConsts.COPY.name,
     itemId: '',
@@ -96,9 +124,12 @@ export default class ClickCopy extends Component {
   }
 
   _processItems = (children) => {
-    // Finds and processes the item children, so we can copy their code
+    // Finds and processes the item children, so we can copy & display their code
     const itemChildren = React.Children.toArray(children).find(
       (child) => child.type.name && child.type.name === 'Items').props.children
+
+    const itemSource = React.Children.map(itemChildren,
+      (child) => reactElementToJSXString(child))[0]
 
     const { itemId, itemText } = React.Children.map(itemChildren, (kid) => {
       const { props: childProps, type: { defaultProps, name = 'Unknown' } } = kid
@@ -125,7 +156,7 @@ export default class ClickCopy extends Component {
       }
     }, {itemId: '', itemText: ''})
 
-    this.setState({itemId, itemText})
+    this.setState({itemId, itemSource, itemText})
   }
 
   _resetCopyState = () => {
@@ -152,14 +183,15 @@ export default class ClickCopy extends Component {
 
   render() {
 
-    const { children, onClick, className, ...props } = this.props
+    const { children, onClick, className } = this.props
 
-    const { copyState, itemId, notificationMessages } = this.state
+    const { copyState, itemId, itemSource, notificationMessages } = this.state
 
     return (
       <ClickContext.Provider value={{
         copyState,
         itemId,
+        itemSource,
         notificationMessages
       }}>
         <div

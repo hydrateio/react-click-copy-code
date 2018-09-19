@@ -29,6 +29,12 @@
   font-size: 1.4rem;
 }
 
+.clickCopySourceWrapper {
+  font-size: .8rem;
+  padding: .5rem;
+  text-align: left;
+}
+
 .clickCopyWrapper {
   position: relative;
   overflow: hidden;

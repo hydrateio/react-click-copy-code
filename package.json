@@ -58,6 +58,7 @@
     "dist"
   ],
   "dependencies": {
-    "copy-to-clipboard": "^3.0.8"
+    "copy-to-clipboard": "^3.0.8",
+    "react-element-to-jsx-string": "^14.0.1"
   }
 }
