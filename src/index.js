@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import copy from 'copy-to-clipboard';
-
 import styles from './styles.css'
 
 const copyConsts = {
-  UNTRIED: {
-    name: 'UNTRIED',
+  COPY: {
+    name: 'COPY',
     text: 'Click to copy!'
   },
   SUCCESS: {
@@ -49,12 +48,13 @@ export default class ClickCopy extends Component {
     )
   }
 
-  static Notification = function ({
+  static Notification = function Notification ({
     background = 'hsla(233, 100%, 50%, 1)',
     color = 'white',
     font = 'monospace',
+    className,
     style,
-    className
+    ...props
   }) {
     return (
         <ClickContextConsumer>
@@ -70,6 +70,7 @@ export default class ClickCopy extends Component {
                 fontFamily: font,
                 ...style
               }}
+              { ...props }
             >
               { notificationMessages[copyState] || copyConsts[copyState].text }
             </div>
@@ -79,19 +80,19 @@ export default class ClickCopy extends Component {
   }
 
   state = {
-    copyState: copyConsts.UNTRIED.name,
+    copyState: copyConsts.COPY.name,
     itemId: '',
     itemText: '',
     notificationMessages: {}
   }
 
-  _addNotificationMessages = (untried, error, success) => {
+  _addNotificationMessages = (copy, error, success) => {
     const notificationMessages = {
-      [copyConsts.UNTRIED.name]: untried,
+      [copyConsts.COPY.name]: copy,
       [copyConsts.ERROR.name]:   error,
       [copyConsts.SUCCESS.name]: success
     }
-    this.setState({notificationMessages})
+    this.setState({ notificationMessages })
   }
 
   _processItems = (children) => {
@@ -128,7 +129,7 @@ export default class ClickCopy extends Component {
   }
 
   _resetCopyState = () => {
-    setTimeout(() => this.setState({copyState: copyConsts.UNTRIED.name}), 1500)
+    setTimeout(() => this.setState({ copyState: copyConsts.COPY.name }), 1500)
   }
 
   componentWillMount = () => {
@@ -151,16 +152,7 @@ export default class ClickCopy extends Component {
 
   render() {
 
-    const {
-      children,
-      copyText,
-      errorText,
-      successText,
-      onClick,
-      onError,
-      onSuccess,
-      wrapperStyles
-    } = this.props
+    const { children, onClick, className, ...props } = this.props
 
     const { copyState, itemId, notificationMessages } = this.state
 
@@ -172,8 +164,7 @@ export default class ClickCopy extends Component {
       }}>
         <div
           id={itemId}
-          className={styles.clickCopyWrapper}
-          style={wrapperStyles}
+          className={`${styles.clickCopyWrapper} ${className}`}
           onClick={callAll(this.copyClick, onClick)}
         >
           {children}
