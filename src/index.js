@@ -67,7 +67,7 @@ export default class ClickCopy extends Component {
         callAll(this._resetCopyState, this.props.onSuccess))
     } catch (err) {
       this.setState({copyState: copyConsts.ERROR.name},
-        callAll(this._resetCopyState, this.props.onError))
+        callAll(this._resetCopyState, this.props.onError)(err))
     }
   }
 
