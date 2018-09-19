@@ -109,8 +109,7 @@ export default class ClickCopy extends Component {
 
   state = {
     copyState: copyConsts.COPY.name,
-    itemId: '',
-    itemText: '',
+    itemSource: '',
     notificationMessages: {}
   }
 
@@ -123,40 +122,18 @@ export default class ClickCopy extends Component {
     this.setState({ notificationMessages })
   }
 
-  _processItems = (children) => {
+  _processItems = (children, formattingOptions) => {
     // Finds and processes the item children, so we can copy & display their code
     const itemChildren = React.Children.toArray(children).find(
       (child) => child.type.name && child.type.name === 'Items').props.children
 
     const itemSource = React.Children.map(itemChildren,
-      (child) => reactElementToJSXString(child))[0]
+      (child) => reactElementToJSXString(child, {
+        showDefaultProps: false,
+        ...formattingOptions
+      }))[0]
 
-    const { itemId, itemText } = React.Children.map(itemChildren, (kid) => {
-      const { props: childProps, type: { defaultProps, name = 'Unknown' } } = kid
-
-      const itemProperties = Object.entries(childProps)
-        .filter(([key, val]) => {
-            return !(defaultProps && defaultProps[key] && defaultProps[key] === val)
-          })
-
-      const itemId = flatten(itemProperties).join('-')
-
-      const itemPropertiesString = itemProperties.reduce((str, prop) => {
-        const val = typeof prop[1] === 'string' ? `'${prop[1]}'` : prop[1]
-        const newStr = str += ` ${prop[0]}={${val}}`
-        return newStr
-      }, '')
-
-      const itemText = `<${name}${itemPropertiesString} />`
-      return { itemId, itemText }
-    }).reduce((acc, { itemId, itemText }) => {
-      return {
-        itemId:   acc.itemId.concat(itemId),
-        itemText: acc.itemText.concat(itemText)
-      }
-    }, {itemId: '', itemText: ''})
-
-    this.setState({itemId, itemSource, itemText})
+    this.setState({itemSource})
   }
 
   _resetCopyState = () => {
@@ -164,15 +141,21 @@ export default class ClickCopy extends Component {
   }
 
   componentWillMount = () => {
-    const { children, copyText, errorText, successText} = this.props
+    const {
+      children,
+      copyText,
+      formattingOptions,
+      errorText,
+      successText
+    } = this.props
 
-    this._processItems(children)
+    this._processItems(children, formattingOptions)
     this._addNotificationMessages(copyText, errorText, successText)
   }
 
   copyClick = () => {
     try {
-      copy(this.state.itemText)
+      copy(this.state.itemSource)
       this.setState({copyState: copyConsts.SUCCESS.name},
         callAll(this._resetCopyState, this.props.onSuccess))
     } catch (err) {
@@ -185,17 +168,15 @@ export default class ClickCopy extends Component {
 
     const { children, onClick, className } = this.props
 
-    const { copyState, itemId, itemSource, notificationMessages } = this.state
+    const { copyState, itemSource, notificationMessages } = this.state
 
     return (
       <ClickContext.Provider value={{
         copyState,
-        itemId,
         itemSource,
         notificationMessages
       }}>
         <div
-          id={itemId}
           className={`${styles.clickCopyWrapper} ${className || ''}`}
           onClick={callAll(this.copyClick, onClick)}
         >

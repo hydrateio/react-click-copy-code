@@ -43,6 +43,7 @@ class Example extends Component {
 | Property | Type | Default |  Description |
 | -------- | ----------- | ---- | ------- |
 | copyText | string | 'Click to copy!' | Text shown in notification when ready to copy. |
+| formattingOptions | object | { showDefaultProps: false } | Any option from [react-element-to-jsx-string options](https://github.com/algolia/react-element-to-jsx-string)
 | errorText | string | 'Oops. Try again.' | Text shown in notification when copy action fails. |
 | onClick | function | Copies text and sets state to success/fail. | Function called when element is clicked. Custom will be called alongside default. |
 | onError | function | Resets state to ready to copy. | Function called when copy action fails. Custom will be called alongside default. |

@@ -7,7 +7,7 @@ body {
 .container {
   display: flex;
   width: 90vw;
-  height: 40vh;
+  height: 100%;
   align-items: top;
   margin: 2rem auto;
 }
