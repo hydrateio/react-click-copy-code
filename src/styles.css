@@ -39,6 +39,7 @@
   position: relative;
   overflow: hidden;
   cursor: pointer;
+  padding: .5rem;
 }
 
 .clickCopyWrapper:active .clickCopyNotificationWrapper,
