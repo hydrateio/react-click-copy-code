@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styles from './styles.css'
 import { ClickContextConsumer, copyConsts } from './utils'
 
-function Notification ({
+export function Notification ({
   background = '#001eff',
   color = 'white',
   font = 'monospace',
@@ -16,7 +16,7 @@ function Notification ({
           copyState,
           notificationMessages
         }) => (
-          <button
+          <div
             className={`${styles.clickCopyNotificationWrapper} ${className || ''}`}
             style={{
               background,
@@ -27,10 +27,8 @@ function Notification ({
             { ...props }
           >
             { notificationMessages[copyState] || copyConsts[copyState].text }
-          </button>
+          </div>
         )}
       </ClickContextConsumer>
   )
 }
-
-export default Notification

@@ -17,7 +17,7 @@ npm install --save react-clip-copy-code
 ```jsx
 import React, { Component } from 'react'
 
-import ClickCopy from 'react-clip-copy-code'
+import { ClickCopy } from 'react-clip-copy-code'
 
 class Example extends Component {
   render () {
