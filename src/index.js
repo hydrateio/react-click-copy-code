@@ -32,7 +32,7 @@ export default class ClickCopy extends Component {
   _processItems = (children, formattingOptions) => {
     // Finds and processes the item children, so we can copy & display their code
     const itemChildren = React.Children.toArray(children).find(
-      (child) => child.type.name && child.type.name === 'Items').props.children
+      (child) => child.type.displayName && child.type.displayName === 'ClickCopy.Items').props.children
 
     const itemSource = React.Children.map(itemChildren,
       (child) => reactElementToJSXString(child, {

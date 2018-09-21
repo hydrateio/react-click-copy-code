@@ -9,4 +9,6 @@ function Items ({ children }) {
     )
   }
 
+Items.displayName = 'ClickCopy.Items'
+
 export default Items
