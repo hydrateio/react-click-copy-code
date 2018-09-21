@@ -41,7 +41,8 @@
   cursor: pointer;
 }
 
-.clickCopyWrapper:hover .clickCopyNotificationWrapper,
-.clickCopyWrapper:active .clickCopyNotificationWrapper {
+.clickCopyWrapper:active .clickCopyNotificationWrapper,
+.clickCopyWrapper:focus .clickCopyNotificationWrapper,
+.clickCopyWrapper:hover .clickCopyNotificationWrapper {
   animation: click-copy-slide-in .5s 1 ease-out forwards;
 }

@@ -83,12 +83,12 @@ export default class ClickCopy extends Component {
         itemSource,
         notificationMessages
       }}>
-        <div
+        <button
           className={`${styles.clickCopyWrapper} ${className || ''}`}
           onClick={callAll(this.copyClick, onClick)}
         >
           {children}
-        </div>
+        </button>
       </ClickContext.Provider>
     )
   }
