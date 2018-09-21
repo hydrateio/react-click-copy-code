@@ -38,7 +38,9 @@ export default class ClickCopy extends Component {
       (child) => reactElementToJSXString(child, {
         showDefaultProps: false,
         ...formattingOptions
-      }))[0]
+      })).reduce((acc, sourceString) => acc.concat(sourceString))
+
+      console.log(itemSource);
 
     this.setState({itemSource})
   }

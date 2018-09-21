@@ -16,7 +16,7 @@ function Notification ({
           copyState,
           notificationMessages
         }) => (
-          <div
+          <button
             className={`${styles.clickCopyNotificationWrapper} ${className || ''}`}
             style={{
               background,
@@ -27,7 +27,7 @@ function Notification ({
             { ...props }
           >
             { notificationMessages[copyState] || copyConsts[copyState].text }
-          </div>
+          </button>
         )}
       </ClickContextConsumer>
   )
