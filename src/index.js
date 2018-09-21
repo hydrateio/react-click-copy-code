@@ -5,11 +5,11 @@ import reactElementToJSXString from 'react-element-to-jsx-string';
 import styles from './styles.css'
 
 import { copyConsts, callAll, ClickContext, ClickContextConsumer } from './utils'
-import Items from './Items'
-import Notification from './Notification'
-import Source from './Source'
+import { Items } from './Items'
+import { Notification } from './Notification'
+import { Source } from './Source'
 
-export default class ClickCopy extends Component {
+export class ClickCopy extends Component {
   static Items = Items
   static Notification = Notification
   static Source = Source
@@ -39,8 +39,6 @@ export default class ClickCopy extends Component {
         showDefaultProps: false,
         ...formattingOptions
       })).reduce((acc, sourceString) => acc.concat(sourceString))
-
-      console.log(itemSource);
 
     this.setState({itemSource})
   }
