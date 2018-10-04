@@ -34,18 +34,20 @@ export class ClickCopy extends Component {
     const itemChildren = React.Children.toArray(children).find(
       (child) => child.type.displayName && child.type.displayName === 'ClickCopy.Items').props.children
 
-    const itemSource = React.Children.map(itemChildren,
+    return React.Children.map(itemChildren,
       (child) => reactElementToJSXString(child, {
         showDefaultProps: false,
         filterProps: ['key'],
         ...formattingOptions
       })).reduce((acc, sourceString) => acc.concat(sourceString))
-
-    this.setState({itemSource})
   }
 
   _resetCopyState = () => {
     setTimeout(() => this.setState({ copyState: copyConsts.COPY.name }), 1500)
+  }
+
+  _setSource = (itemSource) => {
+    this.setState({itemSource})
   }
 
   componentWillMount = () => {
@@ -54,10 +56,13 @@ export class ClickCopy extends Component {
       copyText,
       formattingOptions,
       errorText,
+      sourceOverwrite,
       successText
     } = this.props
 
-    this._processItems(children, formattingOptions)
+    const textToCopy = sourceOverwrite || this._processItems(children, formattingOptions)
+
+    this._setSource(textToCopy)
     this._addNotificationMessages(copyText, errorText, successText)
   }
 
@@ -101,5 +106,6 @@ ClickCopy.propTypes = {
   onClick: PropTypes.func,
   onError: PropTypes.func,
   onSuccess: PropTypes.func,
+  sourceOverwrite: PropTypes.string,
   successText: PropTypes.string
 }

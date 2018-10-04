@@ -49,6 +49,7 @@ class Example extends Component {
 | onClick | function | Copies text and sets state to success/fail. | Function called when element is clicked. Custom will be called alongside default. |
 | onError | function | Resets state to ready to copy. | Function called when copy action fails. Custom will be called alongside default. |
 | onSuccess | function | Resets state to ready to copy. | Function called when when copy action succeeds. Custom will be called alongside default. |
+| sourceOverwrite | string | ----------- | Optional text to be copied to the clipboard in place of the source contained in the Items subcomponent. |
 | successText | string | 'Copied!' | Text shown in notification when copy action succeeds. |
 
 ### ClickCopy.Items
