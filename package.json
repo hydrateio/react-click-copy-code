@@ -1,6 +1,6 @@
 {
   "name": "react-click-copy-code",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Copies any child component&#x27;s code to clipboard. Great for example pages.",
   "author": "sarahgp",
   "license": "MIT",
