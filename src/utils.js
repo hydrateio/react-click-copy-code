@@ -1,4 +1,5 @@
 import React from 'react'
+import createReactContext from 'create-react-context';
 
 const copyConsts = {
   COPY: {
@@ -18,7 +19,7 @@ const copyConsts = {
 const callAll = (...fns) => (...args) =>
   fns.forEach((fn) => fn && fn(...args))
 
-const ClickContext = React.createContext()
+const ClickContext = createReactContext()
 
 function ClickContextConsumer(props) {
   return (

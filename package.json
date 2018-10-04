@@ -60,6 +60,7 @@
   ],
   "dependencies": {
     "copy-to-clipboard": "^3.0.8",
+    "create-react-context": "^0.2.3",
     "react-element-to-jsx-string": "^14.0.1"
   }
 }
