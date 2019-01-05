@@ -16,9 +16,32 @@ module.exports = (env = process.env.NODE_ENV || 'production') => ({
   },
   mode: env,
   optimization: {
-    minimize: !isDev(env),
+    minimize: false,
     minimizer: [
       new UglifyJsPlugin({
+        uglifyOptions: {
+          warnings: false,
+          parse: {},
+          compress: {
+            warnings: false,
+            // Disabled because of an issue with Uglify breaking seemingly valid code:
+            // https://github.com/facebookincubator/create-react-app/issues/2376
+            // Pending further investigation:
+            // https://github.com/mishoo/UglifyJS2/issues/2011
+            comparisons: false,
+          },
+          mangle: false,
+          output: {
+            comments: false,
+            // Turned on because emoji and regex is not minified properly using default
+            // https://github.com/facebookincubator/create-react-app/issues/2488
+            ascii_only: true,
+          },
+          toplevel: false,
+          nameCache: null,
+          ie8: false,
+          keep_fnames: false,
+        },
         cache: true,
         parallel: true,
         sourceMap: true // set to true if you want JS source maps
